@@ -21,7 +21,7 @@ TOKEN = config['ptb']['bot_token']
 def google_search(file_path, message):
     
     img_url = file_path
-    msg = message.reply_text("🔎 *Processing...*", parse_mode="Markdown")
+    msg = message.reply_text("🔎 *در حال زدن...*", parse_mode="Markdown")
     
     # Get search page
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14', 
