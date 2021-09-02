@@ -20,7 +20,7 @@ TOKEN = config['ptb']['bot_token']
 #Function that gives a page html content
 def google_search(file_path, message):
     
-    img_url = "https://api.telegram.org/file/bot%s/%s" % (TOKEN, file_path)
+    img_url = file_path
     msg = message.reply_text("🔎 *Processing...*", parse_mode="Markdown")
     
     # Get search page
@@ -33,8 +33,6 @@ def google_search(file_path, message):
         # Check for 429
         if response.status_code != 429:
             break
-
-        print(429)
 
     # Parse all needed information
     b = bs4.BeautifulSoup(response.text, "html.parser")

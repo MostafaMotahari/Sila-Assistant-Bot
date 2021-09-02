@@ -30,7 +30,6 @@ def start(update: Update, context: CallbackContext):
 
 # Searching Image
 def search_image(update: Update, context: CallbackContext):
-    print(type(update))
     google_search(
         update.message.photo[0].get_file().file_path,
         update.message

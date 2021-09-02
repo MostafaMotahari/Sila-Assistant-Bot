@@ -22,10 +22,10 @@ def get_user(db: Session, user_id, get_fisrt=True):
 
 # Change a user
 def change_user(db: Session, new_user: UserModel):
-    old_user = get_user(db, new_user.user_id, False)
+    old_user = get_user(db, new_user.user_id, False).first()
     
-    if old_user.first():
-        old_user.update(new_user)
+    if old_user:
+        old_user = new_user
         db.commit()
         return new_user
     
@@ -58,7 +58,7 @@ def increase_search(db: Session, user_id, count=1):
     
     if user_obj:
         user_obj.total_searches += count
-        user.update(user_obj)
+        #user.update(user_obj)
         db.commit()
         return user_obj
     

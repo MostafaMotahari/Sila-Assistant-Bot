@@ -25,7 +25,7 @@ from base_class import Base
 config = configparser.ConfigParser()
 config.read("base/config.ini")
 TOKEN = config['ptb']['bot_token']
-updater = Updater(token=TOKEN, use_context=True)
+updater = Updater(token=TOKEN, use_context=True, workers=24)
 
 # Enable logging
 logging.basicConfig(
