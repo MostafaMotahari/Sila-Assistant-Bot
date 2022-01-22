@@ -4,6 +4,7 @@ import requests
 import bs4
 from time import sleep
 from html import escape
+import json
 
 from telegram import (
     InlineKeyboardButton,
@@ -15,7 +16,8 @@ from telegram import (
 config = configparser.ConfigParser()
 config.read("base/config.ini")
 TOKEN = config['ptb']['bot_token']
-
+API_URL = config['api']['api_url']
+print(API_URL)
 
 #Function that gives a page html content
 def google_search(file_path, message):
@@ -24,39 +26,42 @@ def google_search(file_path, message):
     msg = message.reply_text("🔎 *در حال زدن...*", parse_mode="Markdown")
     
     # Get search page
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14', 
-    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Accept-language': 'en-US,en;q=0.9'}
+    #headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14', 
+    #'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Accept-language': 'en-US,en;q=0.9'}
 
-    while True:
-        response = requests.get("https://www.google.com/searchbyimage?image_url=" + img_url, headers=headers)
+    # The required data and headers for sending to api
+    data = {
+        "image_url": img_url,
+        "resized_images": False,
+        "cloud_api": False
+    }
 
-        # Check for 429
-        if response.status_code != 429:
-            break
+    headers = {'Content-type': 'application/json'}
 
+    # Request to api
+    response = requests.post(API_URL, headers=headers, data=json.dumps(data))
+    print(response.text)
     # Parse all needed information
-    b = bs4.BeautifulSoup(response.text, "html.parser")
+    j = response.json()
 
     # Try parse suggestion
     try:
-        find_sug = b.select('.fKDtNb')
-        suggestion = find_sug[0].text
+        suggestion = j["best_guess"]
     except Exception as e:
         print(e, "No suggestion")
         suggestion = False
 
     # Try parse similar
-    try:
-        find_similar = b.select(".e2BEnf")
-        similar = 'https://www.google.com' + str(find_similar[0].a['href'])
-    except Exception as e:
-        print(e, "No similar")
-        similar = False
+    #try:
+    #    find_similar = b.select(".e2BEnf")
+    #    similar = 'https://www.google.com' + str(find_similar[0].a['href'])
+    #except Exception as e:
+    #    print(e, "No similar")
+    #    similar = False
 
     # Try parse sites
     try:
-        find_sites = b.find_all('div', {'class': 'yuRUbf'})
-        sites = [(si.a['href'], si.h3.text) for si in find_sites]
+        sites = [(link, site) for site, link in zip(j["titles"], j["links"])]
     except Exception as e:
         print(e, "No sites")
         sites = False
@@ -71,10 +76,10 @@ def google_search(file_path, message):
         txt += '\n\n'.join([f'<a href="{escape(site[0])}">{escape(site[1])}</a>' for site in sites])
 
     inline_keyboard = []
-    if similar:
-        inline_keyboard.append([
-            InlineKeyboardButton(text="🔗 Link to similar images", url=similar)
-        ])
+    #if similar:
+    #    inline_keyboard.append([
+    #        InlineKeyboardButton(text="🔗 Link to similar images", url=similar)
+    #    ])
 
     inline_keyboard.append([
         InlineKeyboardButton(text="🌐 Search page", url="https://www.google.com/searchbyimage?image_url=" + img_url)
