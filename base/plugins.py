@@ -11,6 +11,8 @@ from telegram import (
     InlineKeyboardMarkup
 )
 
+import session
+from db_methods import get_users_list
 
 # Parsing bot configartion fot reading bot token
 config = configparser.ConfigParser()
@@ -40,7 +42,7 @@ def google_search(file_path, message):
 
     # Request to api
     response = requests.post(API_URL, headers=headers, data=json.dumps(data))
-    print(response.text)
+
     # Parse all needed information
     j = response.json()
 
@@ -85,3 +87,11 @@ def google_search(file_path, message):
         InlineKeyboardButton(text="🌐 Search page", url="https://www.google.com/searchbyimage?image_url=" + img_url)
     ])
     msg.edit_text(text=txt, parse_mode='html', reply_markup=InlineKeyboardMarkup(inline_keyboard), disable_web_page_preview=True)
+
+
+# Creating a local database for temporary requests
+def create_local_database():
+    db = session.get_db().__next__()
+
+    for user_id in get_users_list(db):
+        session.TEMP_DATA.append(user_id)

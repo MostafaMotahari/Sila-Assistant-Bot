@@ -46,6 +46,10 @@ def sign_up(db: Session, user_id: int, first_search=False):
             total_searches = 0
         )
 
+    # Add user in temporary database
+    global TEMP_DATA
+    TEMP_DATA.append(user_id)
+
     db.add(user)
     db.commit()
     db.refresh(user)
