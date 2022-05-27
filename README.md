@@ -27,7 +27,7 @@ To install this project on your personal server, first od all clone this repo
 Then run these commands
 ```bash
   cd Google-Reverse-Search-by-Image
-  pip install requirements.txt
+  pip install -r requirements.txt
 ```
 
 And finally run the project
