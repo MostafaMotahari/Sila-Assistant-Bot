@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session, load_only
+from sqlalchemy.orm import Session
 
 from base.sql.models import UserModel
 from base.sql.session import TEMP_DATA
@@ -56,15 +56,15 @@ def sign_up(db: Session, user_id: int, first_search=False):
     db.refresh(user)
 
 
-# Increase total searches of a user
-def increase_search(db: Session, user_id, count=1):
-    user = get_user(db, user_id, False)
-    user_obj = user.first()
+# Controling details of searching
+def search_details_control(db: Session, user_id, count=1):
+    user = db.query(UserModel).filter(UserModel.user_id == user_id).first()
     
-    if user_obj:
-        user_obj.total_searches += count
-        #user.update(user_obj)
+    if user:
+        user.total_searches += count
+        user.search_credit -= count
+        #user.update(user)
         db.commit()
-        return user_obj
+        return user
     
     return False
