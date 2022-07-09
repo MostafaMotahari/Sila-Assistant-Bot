@@ -1,7 +1,4 @@
-import configparser
-import re
 import requests
-import bs4
 from time import sleep
 from html import escape
 import json
@@ -11,8 +8,8 @@ from telegram import (
     InlineKeyboardMarkup
 )
 
-import session
-from db_methods import get_users_list
+import base.sql.session as session
+from base.sql.db_methods import get_users_list
 
 # Parsing bot configartion fot reading bot token
 config = configparser.ConfigParser()

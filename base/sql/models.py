@@ -5,7 +5,7 @@ from sqlalchemy import (
     Boolean
 )
 
-from base_class import Base
+from base.sql.base_class import Base
 
 
 class UserModel(Base):

@@ -5,15 +5,15 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 from plugins import google_search
-from session import get_db, TEMP_DATA
-from db_methods import (
+from base.sql.session import get_db, TEMP_DATA
+from base.sql.db_methods import (
     get_users_list,
     sign_up,
     increase_search,
     get_user
 )
-from models import UserModel
-import messages
+from base.sql.models import UserModel
+import base.plugins.message_templates as message_templates
 
 # Handlers
 
@@ -22,21 +22,13 @@ def verify_user(update: Update, user_id: int):
     global TEMP_DATA
     if user_id not in TEMP_DATA:
         update.message.reply_text(
-            messages.signup_failed
+            message_templates.signup_failed
         )
         return False
 
     return True
 
 
-# Start Message
-def start(update: Update, context: CallbackContext):
-    user_id = update.message.from_user.id
-    
-    if verify_user(update, user_id):
-        update.message.reply_text(
-            messages.start_msg
-        )
 
 
 # Searching Image
@@ -74,7 +66,7 @@ def bot_statistics(update: Update, context: CallbackContext):
             banned_count += 1
 
     update.message.reply_text(
-        messages.statistics_msg.format(
+        message_templates.statistics_msg.format(
             str(users_count),
             str(searches_count),
             str(banned_count)
@@ -93,7 +85,7 @@ def user_statistics(update: Update, context: CallbackContext):
 
     if user:
         update.message.reply_text(
-            messages.user_statistics_msg.format(
+            message_templates.user_statistics_msg.format(
                 str(user.total_searches),
                 str(user.is_banned)
             )

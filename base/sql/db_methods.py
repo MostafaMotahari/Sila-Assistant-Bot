@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session, load_only
 
-from models import UserModel
-from session import TEMP_DATA
+from base.sql.models import UserModel
+from base.sql.session import TEMP_DATA
 
 # Get Users List
 def get_users_list(db: Session):

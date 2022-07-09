@@ -3,28 +3,27 @@ and returning the resault.
 """
 
 # Imports
-from datetime import date
-import re
-import configparser
 import logging
-import time
+from decouple import config
 
-from telegram.ext import (
-    Updater,
-    CommandHandler,
-    MessageHandler,
-    Filters,
-)
+from pyrogram.client import Client
 
-from handlers import *
-from session import engine
-from base_class import Base
+from base.plugins.handlers import *
+from base.sql.session import engine
+from base.sql.base_class import Base
 from plugins import create_local_database
 
+PLUGIN = dict(root="base/plugins")
+
+app = Client(
+    "SilaSearch",
+    api_hash=config("API_HASH"),
+    api_id=config("API_ID"),
+    bot_token=config("BOT_TOKEN"),
+    plugins=PLUGIN
+)
 
 # Parsing bot configartion fot reading bot token
-config = configparser.ConfigParser()
-config.read("base/config.ini")
 TOKEN = config['ptb']['bot_token']
 updater = Updater(token=TOKEN, use_context=True, workers=24)
 
@@ -58,4 +57,4 @@ dispatcher.add_handler(signup_user_by_admin)
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
     create_local_database()
-    updater.start_polling()
+    app.run()
