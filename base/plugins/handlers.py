@@ -4,7 +4,7 @@ import re
 from telegram import Update
 from telegram.ext import CallbackContext
 
-from plugins import google_search
+from base.plugins.searcher import google_search
 from base.sql.session import get_db, TEMP_DATA
 from base.sql.db_methods import (
     get_users_list,

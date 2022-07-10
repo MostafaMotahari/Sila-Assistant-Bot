@@ -47,10 +47,6 @@ def sign_up(db: Session, user_id: int, first_search=False):
             total_searches = 0
         )
 
-    # Add user in temporary database
-    global TEMP_DATA
-    TEMP_DATA.append(user_id)
-
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -63,7 +59,6 @@ def search_details_control(db: Session, user_id, count=1):
     if user:
         user.total_searches += count
         user.search_credit -= count
-        #user.update(user)
         db.commit()
         return user
     
