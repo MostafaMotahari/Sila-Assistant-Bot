@@ -8,6 +8,7 @@ from pyrogram.client import Client
 
 from base.sql.session import engine
 from base.sql.base_class import Base
+from base.sql.db_methods import migrations
 
 PLUGIN = dict(root="base/plugins")
 
@@ -22,4 +23,5 @@ app = Client(
 # Running bot
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
+    migrations()
     app.run()

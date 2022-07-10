@@ -4,48 +4,13 @@ import re
 from telegram import Update
 from telegram.ext import CallbackContext
 
-from base.plugins.searcher import google_search
-from base.sql.session import get_db, TEMP_DATA
+from base.sql.session import get_db
 from base.sql.db_methods import (
     get_users_list,
-    sign_up,
-    increase_search,
     get_user
 )
 from base.sql.models import UserModel
 import base.plugins.message_templates as message_templates
-
-# Handlers
-
-# Check user verfing
-def verify_user(update: Update, user_id: int):
-    global TEMP_DATA
-    if user_id not in TEMP_DATA:
-        update.message.reply_text(
-            message_templates.signup_failed
-        )
-        return False
-
-    return True
-
-
-
-
-# Searching Image
-def search_image(update: Update, context: CallbackContext):
-
-    db = get_db().__next__()
-    user_id = update.message.from_user.id
-    
-    if not verify_user(update, user_id):
-        return 0        
-
-    google_search(
-        update.message.photo[0].get_file().file_path,
-        update.message
-    )
-
-    increase_search(db, user_id)
 
 
 # Get bot statistics

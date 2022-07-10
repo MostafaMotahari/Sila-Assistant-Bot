@@ -10,6 +10,7 @@ from base.sql.db_methods import check_user_exist
 def check_joining_db(username: str):
     headers = {'Authorization': f'Token {config("API_TOKEN")}'}
     response = requests.get(f'{config("API_URL")}/users/?username={username}', headers=headers)
+    print(json.loads(response.text))
     response: dict = json.loads(response.text)[0]
 
     if response.get("team", None):
