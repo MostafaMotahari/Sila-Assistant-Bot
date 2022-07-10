@@ -41,3 +41,14 @@ def search_details_control(user_id, count=1):
         return user
     
     return False
+
+def migrations():
+    db_session = get_db().__next__()
+    user = UserModel(
+        user_id=3234234,
+        is_admin=True
+    )
+
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
