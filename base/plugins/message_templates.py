@@ -4,6 +4,12 @@ You can send me pictures to search in Google.
 **Register in Sila League: @SilaSenior**
 """
 
+search_result_message_template = """
+**Main suggestion: {}**
+
+**Search results:**
+"""
+
 statistics_msg = """
 ✳️ آمار کلی ربات
 👥 تعداد کل کاربران: [ {} ]
