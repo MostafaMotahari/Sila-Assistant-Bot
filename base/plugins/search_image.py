@@ -5,12 +5,13 @@ from pyrogram import filters
 from base.sql.session import get_db
 from base.sql.db_methods import search_details_control
 from base.plugins.searcher import google_search
+from base.plugins.custom_filters import is_member_filter
+
 
 # Main plugin, Search picture on google
-@Client.on_message(filters.photo & filters.private)
+@Client.on_message(filters.photo & filters.private & filters.create(is_member_filter))
 def search_image(client: Client, message: Message):
 
-    db = get_db().__next__()
     file_path = message.download()
 
     google_search(
@@ -18,4 +19,4 @@ def search_image(client: Client, message: Message):
         message
     )
 
-    search_details_control(db, message.from_user.id)
+    search_details_control(message.from_user.id)
