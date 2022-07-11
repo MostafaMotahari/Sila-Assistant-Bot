@@ -6,15 +6,11 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.firefox import GeckoDriverManager
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 from base.plugins import message_templates
 
 # Selenium static variables
-# driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
-
 options = Options()
 options.headless = True
 
@@ -33,7 +29,7 @@ def google_search(file_path: str, message: Message):
 
     # Parse all needed information
     b = bs4.BeautifulSoup(response.text, "html.parser")
-    driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=options)
+    driver = webdriver.Firefox(options=options, executable_path="base/selenium/geckodriver")
     driver.get(b.a["href"])
     b = bs4.BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
