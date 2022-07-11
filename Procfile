@@ -1,1 +1,1 @@
-worker: python base/__main__.py
+worker: python -m base
