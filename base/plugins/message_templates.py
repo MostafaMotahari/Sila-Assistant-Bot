@@ -8,6 +8,8 @@ search_result_message_template = """
 **Main suggestion: {}**
 
 **Search results:**
+
+{}
 """
 
 statistics_msg = """

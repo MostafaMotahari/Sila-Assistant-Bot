@@ -1,10 +1,18 @@
+import site
 import requests
 from html import escape
 import bs4
+import time
 
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 from base.plugins import message_templates
+
+# Selenium static variables
+options = Options()
+options.headless = True
 
 #Function that gives a page html content
 def google_search(file_path: str, message: Message):
@@ -21,6 +29,10 @@ def google_search(file_path: str, message: Message):
 
     # Parse all needed information
     b = bs4.BeautifulSoup(response.text, "html.parser")
+    driver = webdriver.Firefox(options=options, executable_path="base/selenium/geckodriver")
+    driver.get(b.a["href"])
+    b = bs4.BeautifulSoup(driver.page_source, "html.parser")
+    driver.quit()
 
     # Try parse suggestion
     try:
@@ -49,7 +61,7 @@ def google_search(file_path: str, message: Message):
     # Set search result text
     text = message_templates.search_result_message_template.format(
         escape(suggestion) if suggestion else "No main results.",
-        "\n\n".join([f"[{escape(site[0])}]({escape(site[1])})" for site in sites]) if sites else "No sites."
+        "\n\n".join([f"[{escape(site[1])}]({escape(site[0])})" for site in sites]) if sites else "No sites."
     )
 
     # Add inline keyboards
@@ -62,5 +74,6 @@ def google_search(file_path: str, message: Message):
     # Apply the results.
     search_result_msg.edit(
         text=text,
-        reply_markup=InlineKeyboardMarkup(inline_keyboard)
+        reply_markup=InlineKeyboardMarkup(inline_keyboard),
+        disable_web_page_preview=True
     )
