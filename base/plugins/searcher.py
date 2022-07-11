@@ -14,6 +14,7 @@ from base.plugins import message_templates
 
 # Selenium static variables
 # driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+
 options = Options()
 options.headless = True
 
