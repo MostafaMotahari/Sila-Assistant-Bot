@@ -36,7 +36,7 @@ def update_user(user: UserModel):
     user_obj = db_session.query(UserModel).filter(UserModel.user_id == user.user_id).first()
     user_obj = user
     db_session.commit()
-    db_session.refresh(user_obj)
+    # db_session.refresh(user_obj)
     
 
 # Add user
@@ -48,9 +48,10 @@ def add_user(user: User, is_admin: bool, is_superuser: bool):
         is_admin=is_admin,
         is_superuser=is_superuser
     )
+    print(user_obj.__dict__)
     db_session.add(user_obj)
     db_session.commit()
-    db_session.refresh()
+    db_session.refresh(user_obj)
 
 # Controling details of searching
 def search_details_control(user_id, count=1):
@@ -70,6 +71,7 @@ def migrations():
     db_session = get_db().__next__()
     user = UserModel(
         user_id=3234234,
+        username="slkdfjlsdkfj",
         is_admin=True
     )
 

@@ -14,6 +14,7 @@ def check_joining_db(user: User, username: str):
     response: dict = json.loads(response.text)
 
     if len(response) != 0:
+        response = response[0]
         if response.get("team", None):
             add_user(
                 user,

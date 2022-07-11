@@ -12,12 +12,12 @@ from base.plugins import message_templates
 
 # Selenium static variables
 options = Options()
-options.headless = True
+# options.headless = True
 
 #Function that gives a page html content
 def google_search(file_path: str, message: Message):
     
-    search_result_msg: Message = message.reply("Searching ...")
+    search_result_msg: Message = message.reply("**Searching ...**")
     
     # Get search page
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14', 
