@@ -12,7 +12,7 @@ from base.plugins import message_templates
 
 # Selenium static variables
 options = Options()
-# options.headless = True
+options.headless = True
 
 #Function that gives a page html content
 def google_search(file_path: str, message: Message):
