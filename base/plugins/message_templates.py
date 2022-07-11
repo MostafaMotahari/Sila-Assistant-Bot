@@ -12,6 +12,16 @@ search_result_message_template = """
 {}
 """
 
+ban_user_message_template = """
+❌ Unfortunately, you have been **BANNED** from this bot! ❌
+Connect to support: @SilaSenior
+"""
+
+not_member_message_template = """
+⭕️ You're not a member of Sila League! ⭕️
+Connect to support: @SilaSenior
+"""
+
 statistics_msg = """
 ✳️ آمار کلی ربات
 👥 تعداد کل کاربران: [ {} ]

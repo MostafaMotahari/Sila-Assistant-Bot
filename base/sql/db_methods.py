@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import exists
+from pyrogram.types import User
 
 from base.sql.models import UserModel
 from base.sql.session import get_db
@@ -20,14 +21,36 @@ def check_user_exist(user_id):
 
 
 # Get a user
-def get_user(db: Session, user_id, get_fisrt=True):
-    if get_fisrt:
-        user = db.query(UserModel).filter(UserModel.user_id == user_id).first()
-        return user
+def get_user(user_id: int = None, username: str = None):
+    db_session = get_db().__next__()
+    if user_id:
+        user = db_session.query(UserModel).filter(UserModel.user_id == user_id).first()
+    else:
+        user = db_session.query(UserModel).filter(UserModel.username == username).first()
 
-    user = db.query(UserModel).filter(UserModel.user_id == user_id)
-    return user
+    return user if user else None
 
+# Update a user
+def update_user(user: UserModel):
+    db_session = get_db().__next__()
+    user_obj = db_session.query(UserModel).filter(UserModel.user_id == user.user_id).first()
+    user_obj = user
+    db_session.commit()
+    db_session.refresh(user_obj)
+    
+
+# Add user
+def add_user(user: User, is_admin: bool, is_superuser: bool):
+    db_session = get_db().__next__()
+    user_obj = UserModel(
+        user_id=user.id,
+        username=user.username,
+        is_admin=is_admin,
+        is_superuser=is_superuser
+    )
+    db_session.add(user_obj)
+    db_session.commit()
+    db_session.refresh()
 
 # Controling details of searching
 def search_details_control(user_id, count=1):
@@ -42,6 +65,7 @@ def search_details_control(user_id, count=1):
     
     return False
 
+# First run migrations
 def migrations():
     db_session = get_db().__next__()
     user = UserModel(
