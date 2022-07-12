@@ -5,7 +5,7 @@ import bs4
 import time
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 from base.plugins import message_templates
@@ -13,6 +13,7 @@ from base.plugins import message_templates
 # Selenium static variables
 options = Options()
 options.headless = True
+options.binary_location = "/app/.apt/usr/bin/google-chrome"
 
 #Function that gives a page html content
 def google_search(file_path: str, message: Message):
@@ -29,7 +30,7 @@ def google_search(file_path: str, message: Message):
 
     # Parse all needed information
     b = bs4.BeautifulSoup(response.text, "html.parser")
-    driver = webdriver.Firefox(options=options, executable_path="base/selenium/geckodriver")
+    driver = webdriver.Chrome(options=options, executable_path="base/selenium/geckodriver")
     driver.get(b.a["href"])
     b = bs4.BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
