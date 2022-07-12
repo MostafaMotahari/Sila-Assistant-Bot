@@ -47,7 +47,7 @@ def ban_check_filter(_, __, message: Message):
 
 # Search credit filter
 def search_credit_filter(_, __, message: Message):
-    if get_user(message.from_user.id).search_credit > 1:
+    if get_user(message.from_user.id).search_credit > 0 or get_user(message.from_user.id).is_superuser:
         return True
     message.reply(message_templates.credition_finished_message)
     return False
