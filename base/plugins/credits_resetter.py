@@ -28,4 +28,3 @@ def credit_resetter():
         db_session.commit()
 
 scheduler.add_job(credit_resetter, "interval", minutes=2) # hours=24
-scheduler.start()
