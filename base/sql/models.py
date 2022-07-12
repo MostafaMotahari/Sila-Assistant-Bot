@@ -2,6 +2,7 @@ from enum import unique
 from sqlalchemy import (
     Column,
     Integer,
+    BigInteger,
     String,
     Boolean
 )
@@ -13,7 +14,7 @@ class UserModel(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, unique=True, nullable=False)
+    user_id = Column(BigInteger, unique=True, nullable=False)
     username = Column(String, unique=True, nullable=False)
     total_searches = Column(Integer, unique=False, nullable=False, default=0)
     search_credit = Column(Integer, unique=False, nullable=False, default=5)

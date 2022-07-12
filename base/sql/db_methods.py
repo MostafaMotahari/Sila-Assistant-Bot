@@ -48,7 +48,6 @@ def add_user(user: User, is_admin: bool, is_superuser: bool):
         is_admin=is_admin,
         is_superuser=is_superuser
     )
-    print(user_obj.__dict__)
     db_session.add(user_obj)
     db_session.commit()
     db_session.refresh(user_obj)
