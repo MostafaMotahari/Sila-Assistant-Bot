@@ -11,6 +11,10 @@ search_result_message_template = """
 
 {}
 """
+credition_finished_message = """
+💳 Your search credit has been finished! ⭕️
+Connect to support: @SilaSenior
+"""
 
 ban_user_message_template = """
 ❌ Unfortunately, you have been **BANNED** from this bot! ❌

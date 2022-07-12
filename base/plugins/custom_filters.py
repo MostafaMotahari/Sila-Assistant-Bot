@@ -43,3 +43,11 @@ def ban_check_filter(_, __, message: Message):
         return True
     message.reply(message_templates.ban_user_message_template)
     return False
+
+
+# Search credit filter
+def search_credit_filter(_, __, message: Message):
+    if get_user(message.from_user.id).search_credit > 1:
+        return True
+    message.reply(message_templates.credition_finished_message)
+    return False

@@ -56,6 +56,7 @@ def add_user(user: User, is_admin: bool, is_superuser: bool):
 def search_details_control(user_id, count=1):
     db_session = get_db().__next__()
     user = db_session.query(UserModel).filter(UserModel.user_id == user_id).first()
+    print(user.__dict__)
     
     if user:
         user.total_searches += count
