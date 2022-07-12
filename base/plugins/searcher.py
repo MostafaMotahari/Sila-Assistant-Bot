@@ -30,7 +30,7 @@ def google_search(file_path: str, message: Message):
 
     # Parse all needed information
     b = bs4.BeautifulSoup(response.text, "html.parser")
-    driver = webdriver.Chrome(options=options, executable_path="base/selenium/geckodriver")
+    driver = webdriver.Chrome(options=options, executable_path="base/selenium/chromedriver")
     driver.get(b.a["href"])
     b = bs4.BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
