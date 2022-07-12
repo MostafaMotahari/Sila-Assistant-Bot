@@ -27,4 +27,4 @@ def credit_resetter():
         user.search_credit = 5
         db_session.commit()
 
-scheduler.add_job(credit_resetter, "interval", minutes=2) # hours=24
+scheduler.add_job(credit_resetter, "interval", hours=24) # hours=24
