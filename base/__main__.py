@@ -24,6 +24,9 @@ app = Client(
 # Running bot
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
-    migrations()
+    try:
+        migrations()
+    except:
+        pass
     scheduler.start()
     app.run()
